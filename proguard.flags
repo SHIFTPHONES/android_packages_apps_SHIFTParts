@@ -1,0 +1,24 @@
+# Keep all Fragments in this package, which are used by reflection.
+-keep class com.shiftos.shiftparts.*Fragment
+-keep class com.shiftos.shiftparts.*Picker
+-keep class com.shiftos.shiftparts.*Settings
+
+-keep class com.shiftos.shiftparts.gestures.*
+-keep class com.shiftos.shiftparts.input.*
+-keep class com.shiftos.shiftparts.notificationlight.*
+-keep class com.shiftos.shiftparts.power.*
+-keep class com.shiftos.shiftparts.sounds.*
+
+# Keep keyhandler constructor
+-keep public class * implements com.android.internal.os.DeviceKeyHandler {
+   public <init>(android.content.Context);
+}
+
+# Keep click responders
+-keepclassmembers class com.android.settings.inputmethod.UserDictionaryAddWordActivity {
+  *** onClick*(...);
+}
+
+-keep public class * extends androidx.preference.* {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright 2016, The CyanogenMod Project
+ * Copyright 2017-2019, The LineageOS Project
+ * Copyright 2020, Shift GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
+    package="com.shiftos.shiftparts"
+    android:versionCode="1"
+    android:versionName="1.0"
+    android:sharedUserId="android.uid.system">
+
+    <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="24" />
+
+    <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.DEVICE_POWER" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_SEARCH_INDEXABLES" />
+
+    <uses-permission android:name="shiftos.permission.MANAGE_REMOTE_PREFERENCES" />
+
+    <protected-broadcast android:name="shiftos.intent.action.UPDATE_POWER_MENU" />
+    <protected-broadcast android:name="com.shiftos.shiftparts.PART_CHANGED" />
+    <protected-broadcast android:name="com.shiftos.shiftparts.REFRESH_PART" />
+
+    <application android:label="@string/shiftparts_title"
+            android:theme="@style/Theme.Settings"
+            android:hardwareAccelerated="true"
+            android:supportsRtl="true"
+            android:defaultToDeviceProtectedStorage="true"
+            android:directBootAware="true">
+
+        <activity android:name=".PartsActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="com.shiftos.settings.summary.receiver"
+                android:value="com.shiftos.shiftparts.PartsUpdater" />
+        </activity>
+
+        <receiver android:name=".PartsUpdater" android:enabled="true">
+            <intent-filter>
+                <action android:name="shiftos.intent.action.UPDATE_PREFERENCE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <provider android:name=".search.ShiftPartsSearchIndexablesProvider"
+                  android:authorities="com.shiftos.shiftparts"
+                  android:multiprocess="false"
+                  android:grantUriPermissions="true"
+                  android:permission="android.permission.READ_SEARCH_INDEXABLES"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.action.SEARCH_INDEXABLES_PROVIDER" />
+            </intent-filter>
+        </provider>
+
+        <!-- Button settings (System category) -->
+        <activity-alias
+            android:name=".input.ButtonSettings"
+            android:label="@string/button_pref_title"
+            android:icon="@drawable/ic_settings_buttons"
+            android:targetActivity="PartsActivity">
+            <intent-filter>
+                <action android:name="com.android.settings.action.IA_SETTINGS" />
+                <action android:name="com.shiftos.shiftparts.BUTTON_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.settings.category"
+                android:value="com.android.settings.category.ia.system" />
+            <meta-data
+                android:name="com.android.settings.order"
+                android:value="-256" />
+            <meta-data
+                android:name="com.android.settings.summary"
+                android:resource="@string/summary_empty" />
+        </activity-alias>
+
+        <activity android:name=".gestures.KeyHandler" />
+
+        <!-- Status bar settings (System category) -->
+        <activity-alias
+            android:name=".statusbar.StatusBarSettings"
+            android:label="@string/status_bar_title"
+            android:icon="@drawable/ic_settings_statusbar"
+            android:targetActivity="PartsActivity">
+            <intent-filter>
+                <action android:name="com.android.settings.action.IA_SETTINGS" />
+                <action android:name="com.shiftos.shiftparts.STATUS_BAR_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.settings.category"
+                android:value="com.android.settings.category.ia.system" />
+            <meta-data
+                android:name="com.android.settings.order"
+                android:value="-254" />
+            <meta-data
+                android:name="com.android.settings.summary"
+                android:resource="@string/summary_empty" />
+        </activity-alias>
+    </application>
+</manifest>
