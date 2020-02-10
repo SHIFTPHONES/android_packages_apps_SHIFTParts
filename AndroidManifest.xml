@@ -102,8 +102,6 @@
                 android:resource="@string/summary_empty" />
         </activity-alias>
 
-        <activity android:name=".gestures.KeyHandler" />
-
         <!-- Status bar settings (System category) -->
         <activity-alias
             android:name=".statusbar.StatusBarSettings"
@@ -121,6 +119,28 @@
             <meta-data
                 android:name="com.android.settings.order"
                 android:value="-254" />
+            <meta-data
+                android:name="com.android.settings.summary"
+                android:resource="@string/summary_empty" />
+        </activity-alias>
+
+        <!-- Advanced settings (System category) -->
+        <activity-alias
+            android:name=".advanced.AdvancedSettings"
+            android:label="@string/advanced_title"
+            android:icon="@drawable/ic_settings_advanced"
+            android:targetActivity="PartsActivity">
+            <intent-filter>
+                <action android:name="com.android.settings.action.IA_SETTINGS" />
+                <action android:name="com.shiftos.shiftparts.ADVANCED_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.settings.category"
+                android:value="com.android.settings.category.ia.system" />
+            <meta-data
+                android:name="com.android.settings.order"
+                android:value="299" />
             <meta-data
                 android:name="com.android.settings.summary"
                 android:resource="@string/summary_empty" />

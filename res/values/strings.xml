@@ -178,4 +178,9 @@
     <string name="display_rotation_90_title">90 degrees</string>
     <string name="display_rotation_180_title">180 degrees</string>
     <string name="display_rotation_270_title">270 degrees</string>
+
+    <!-- Advanced mode -->
+    <string name="advanced_title">Advanced</string>
+    <string name="advanced_mode_title">Show more features</string>
+    <string name="advanced_mode_description">Enable advanced features for power users to unlock more customization options and extra capabilities.</string>
 </resources>

@@ -49,4 +49,9 @@
           android:title="@string/power_menu_title"
           android:fragment="com.shiftos.shiftparts.input.PowerMenuActions"
           shift:xmlRes="@xml/power_menu_settings" />
+
+    <part android:key="advanced_settings"
+          android:title="@string/advanced_title"
+          android:fragment="com.shiftos.shiftparts.advanced.AdvancedSettings"
+          shift:xmlRes="@xml/advanced_settings" />
 </parts-catalog>
