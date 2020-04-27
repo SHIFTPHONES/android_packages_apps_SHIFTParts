@@ -37,6 +37,12 @@ import static com.shiftos.internal.util.DeviceKeysConstants.*;
 
 public class DeviceUtils {
 
+    /* returns whether the device has a notch or not. */
+    public static boolean hasNotch(Context context) {
+        return context.getResources().getBoolean(
+                com.shiftos.platform.internal.R.bool.config_haveNotch);
+    }
+
     /* returns whether the device has volume rocker or not. */
     public static boolean hasVolumeRocker(Context context) {
         final int deviceKeys = context.getResources().getInteger(
