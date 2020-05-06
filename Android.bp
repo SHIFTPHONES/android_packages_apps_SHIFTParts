@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 The LineageOS Project
+ * Copyright (C) 2019-2020 The LineageOS Project
  * Copyright (C) 2020 Shift GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,4 +44,15 @@ android_app {
         "jsr305",
         "com.shiftos.platform.internal",
     ],
+
+    required: [
+        "privapp_whitelist_com.shiftos.shiftparts"
+    ],
+}
+
+prebuilt_etc {
+    name: "privapp_whitelist_com.shiftos.shiftparts",
+    sub_dir: "permissions",
+    src: "privapp_whitelist_com.shiftos.shiftparts.xml",
+    filename_from_src: true,
 }
