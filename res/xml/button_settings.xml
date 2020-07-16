@@ -30,6 +30,16 @@
         </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="navigation_bar_category"
+        android:title="@string/navigation_bar_category">
+
+        <shiftos.preference.SecureSettingSwitchPreference
+            android:key="sysui_nav_bar_inverse"
+            android:title="@string/navigation_bar_invert_layout_title"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="assist_key"
         android:title="@string/hardware_keys_assist_key_title" >
 
@@ -92,6 +102,6 @@
             android:key="volbtn_music_controls"
             android:title="@string/volbtn_music_controls_title"
             android:summary="@string/volbtn_music_controls_summary"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
     </PreferenceCategory>
 </PreferenceScreen>
