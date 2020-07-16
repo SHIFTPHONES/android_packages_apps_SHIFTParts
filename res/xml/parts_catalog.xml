@@ -54,4 +54,9 @@
           android:title="@string/advanced_title"
           android:fragment="com.shiftos.shiftparts.advanced.AdvancedSettings"
           shift:xmlRes="@xml/advanced_settings" />
+
+    <part android:key="gesture_power_key_torch"
+          android:title="@string/gestures_power_key_torch"
+          android:fragment="com.shiftos.shiftparts.gestures.PowerKeyTorchGestureSettings"
+          shift:xmlRes="@xml/gestures_power_key_torch" />
 </parts-catalog>

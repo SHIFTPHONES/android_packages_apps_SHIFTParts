@@ -64,10 +64,6 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
     private static final String KEY_ASSIST_LONG_PRESS = "hardware_keys_assist_long_press";
     private static final String KEY_POWER_END_CALL = "power_end_call";
     private static final String KEY_VOLUME_MUSIC_CONTROLS = "volbtn_music_controls";
-    private static final String KEY_TORCH_LONG_PRESS_POWER_GESTURE =
-            "torch_long_press_power_gesture";
-    private static final String KEY_TORCH_LONG_PRESS_POWER_TIMEOUT =
-            "torch_long_press_power_timeout";
 
     private static final String CATEGORY_POWER = "power_key";
     private static final String CATEGORY_ASSIST = "assist_key";
@@ -82,8 +78,6 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
     private SwitchPreference mVolumeWakeScreen;
     private SwitchPreference mVolumeMusicControls;
     private SwitchPreference mPowerEndCall;
-    private SwitchPreference mTorchLongPressPowerGesture;
-    private ListPreference mTorchLongPressPowerTimeout;
 
     private Handler mHandler;
 
@@ -124,24 +118,12 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
         // Power button ends calls.
         mPowerEndCall = (SwitchPreference) findPreference(KEY_POWER_END_CALL);
 
-        // Long press power while display is off to activate torchlight
-        mTorchLongPressPowerGesture =
-                (SwitchPreference) findPreference(KEY_TORCH_LONG_PRESS_POWER_GESTURE);
-        final int torchLongPressPowerTimeout = ShiftSettings.System.getInt(resolver,
-                ShiftSettings.System.TORCH_LONG_PRESS_POWER_TIMEOUT, 0);
-        mTorchLongPressPowerTimeout = initList(KEY_TORCH_LONG_PRESS_POWER_TIMEOUT,
-                torchLongPressPowerTimeout);
-
         mHandler = new Handler();
 
         if (hasPowerKey) {
             if (!TelephonyUtils.isVoiceCapable(getActivity())) {
                 powerCategory.removePreference(mPowerEndCall);
                 mPowerEndCall = null;
-            }
-            if (!DeviceUtils.deviceSupportsFlashLight(getActivity())) {
-                powerCategory.removePreference(mTorchLongPressPowerGesture);
-                powerCategory.removePreference(mTorchLongPressPowerTimeout);
             }
         } else {
             prefScreen.removePreference(powerCategory);
@@ -257,13 +239,6 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
         ShiftSettings.System.putInt(getContentResolver(), setting, Integer.valueOf(value));
     }
 
-    private void handleSystemListChange(ListPreference pref, Object newValue, String setting) {
-        String value = (String) newValue;
-        int index = pref.findIndexOfValue(value);
-        pref.setSummary(pref.getEntries()[index]);
-        Settings.System.putInt(getContentResolver(), setting, Integer.valueOf(value));
-    }
-
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference == mAssistPressAction) {
@@ -273,10 +248,6 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
         } else if (preference == mAssistLongPressAction) {
             handleListChange(mAssistLongPressAction, newValue,
                     ShiftSettings.System.KEY_ASSIST_LONG_PRESS_ACTION);
-            return true;
-        } else if (preference == mTorchLongPressPowerTimeout) {
-            handleListChange(mTorchLongPressPowerTimeout, newValue,
-                    ShiftSettings.System.TORCH_LONG_PRESS_POWER_TIMEOUT);
             return true;
         }
         return false;
