@@ -19,13 +19,11 @@ package com.shiftos.shiftparts.statusbar;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.text.format.DateFormat;
 import android.text.TextUtils;
 import android.util.ArraySet;
 import android.view.View;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
 import shiftos.preference.ShiftSystemSettingListPreference;
@@ -42,26 +40,20 @@ import java.util.Set;
 public class StatusBarSettings extends SettingsPreferenceFragment
         implements Preference.OnPreferenceChangeListener, Searchable {
 
-    private static final String CATEGORY_CLOCK = "status_bar_clock_key";
-
     private static final String ICON_BLACKLIST = "icon_blacklist";
-
     private static final String STATUS_BAR_CLOCK_STYLE = "status_bar_clock";
-    private static final String STATUS_BAR_AM_PM = "status_bar_am_pm";
     private static final String STATUS_BAR_QUICK_QS_PULLDOWN = "qs_quick_pulldown";
-
 
     private static final int PULLDOWN_DIR_NONE = 0;
     private static final int PULLDOWN_DIR_RIGHT = 1;
     private static final int PULLDOWN_DIR_LEFT = 2;
 
     private static final String NETWORK_TRAFFIC_SETTINGS = "network_traffic_settings";
+    private static final String STATUS_BAR_CLOCK_SETTINGS = "status_bar_clock_key";
 
     private ShiftSystemSettingListPreference mQuickPulldown;
-    private ShiftSystemSettingListPreference mStatusBarClock;
-    private ShiftSystemSettingListPreference mStatusBarAmPm;
-    private PreferenceCategory mStatusBarClockCategory;
     private PreferenceScreen mNetworkTrafficPref;
+    private PreferenceScreen mClockIndicatorPref;
 
     private boolean mHasNotch;
 
@@ -71,20 +63,12 @@ public class StatusBarSettings extends SettingsPreferenceFragment
         addPreferencesFromResource(R.xml.status_bar_settings);
 
         mNetworkTrafficPref = (PreferenceScreen) findPreference(NETWORK_TRAFFIC_SETTINGS);
+        mClockIndicatorPref = (PreferenceScreen) findPreference(STATUS_BAR_CLOCK_SETTINGS);
 
         mHasNotch = DeviceUtils.hasNotch(getActivity());
         if (mHasNotch) {
             getPreferenceScreen().removePreference(mNetworkTrafficPref);
         }
-
-        mStatusBarAmPm =
-                (ShiftSystemSettingListPreference) findPreference(STATUS_BAR_AM_PM);
-        mStatusBarClock =
-                (ShiftSystemSettingListPreference) findPreference(STATUS_BAR_CLOCK_STYLE);
-        mStatusBarClock.setOnPreferenceChangeListener(this);
-
-        mStatusBarClockCategory =
-                (PreferenceCategory) getPreferenceScreen().findPreference(CATEGORY_CLOCK);
 
         mQuickPulldown =
                 (ShiftSystemSettingListPreference) findPreference(STATUS_BAR_QUICK_QS_PULLDOWN);
@@ -99,38 +83,13 @@ public class StatusBarSettings extends SettingsPreferenceFragment
         final String curIconBlacklist = Settings.Secure.getString(getContext().getContentResolver(),
                 ICON_BLACKLIST);
 
-        if (TextUtils.delimitedStringContains(curIconBlacklist, ',', "clock")) {
-            getPreferenceScreen().removePreference(mStatusBarClockCategory);
-        } else {
-            getPreferenceScreen().addPreference(mStatusBarClockCategory);
-        }
+        mClockIndicatorPref.setEnabled(
+                !TextUtils.delimitedStringContains(curIconBlacklist, ',', "clock"));
 
-        if (DateFormat.is24HourFormat(getActivity())) {
-            mStatusBarAmPm.setEnabled(false);
-            mStatusBarAmPm.setSummary(R.string.status_bar_am_pm_info);
-        }
-
-        final boolean disallowCenteredClock = mHasNotch || getNetworkTrafficStatus() != 0;
-
-        // Adjust status bar preferences for RTL
         if (getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
-            if (disallowCenteredClock) {
-                mStatusBarClock.setEntries(R.array.status_bar_clock_position_entries_notch_rtl);
-                mStatusBarClock.setEntryValues(R.array.status_bar_clock_position_values_notch_rtl);
-            } else {
-                mStatusBarClock.setEntries(R.array.status_bar_clock_position_entries_rtl);
-                mStatusBarClock.setEntryValues(R.array.status_bar_clock_position_values_rtl);
-            }
             mQuickPulldown.setEntries(R.array.status_bar_quick_qs_pulldown_entries_rtl);
             mQuickPulldown.setEntryValues(R.array.status_bar_quick_qs_pulldown_values_rtl);
-        } else if (disallowCenteredClock) {
-            mStatusBarClock.setEntries(R.array.status_bar_clock_position_entries_notch);
-            mStatusBarClock.setEntryValues(R.array.status_bar_clock_position_values_notch);
-        } else {
-            mStatusBarClock.setEntries(R.array.status_bar_clock_position_entries);
-            mStatusBarClock.setEntryValues(R.array.status_bar_clock_position_values);
         }
-
         // Disable network traffic preferences if clock is centered in the status bar
         updateNetworkTrafficStatus(getClockPosition());
     }
@@ -142,9 +101,6 @@ public class StatusBarSettings extends SettingsPreferenceFragment
         switch (key) {
             case STATUS_BAR_QUICK_QS_PULLDOWN:
                 updateQuickPulldownSummary(value);
-                break;
-            case STATUS_BAR_CLOCK_STYLE:
-                updateNetworkTrafficStatus(value);
                 break;
         }
         return true;
@@ -182,11 +138,6 @@ public class StatusBarSettings extends SettingsPreferenceFragment
                 R.string.network_traffic_disabled_clock :
                 R.string.network_traffic_settings_summary
         ));
-    }
-
-    private int getNetworkTrafficStatus() {
-        return ShiftSettings.Secure.getInt(getActivity().getContentResolver(),
-                ShiftSettings.Secure.NETWORK_TRAFFIC_MODE, 0);
     }
 
     private int getClockPosition() {
