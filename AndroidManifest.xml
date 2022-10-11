@@ -229,6 +229,7 @@
 -->
 
         <!-- Anonymous Statistics -->
+<!--
         <receiver android:name=".lineagestats.ReportingServiceManager"
             android:enabled="true"
             android:exported="false"
@@ -252,6 +253,7 @@
                  android:label="ReportingService"
                  android:enabled="true"
                  android:exported="false" />
+-->
 
         <activity android:name=".profiles.NFCProfile">
             <intent-filter>
