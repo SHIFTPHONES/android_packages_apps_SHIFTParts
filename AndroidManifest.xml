@@ -52,6 +52,7 @@
                 android:value="org.lineageos.lineageparts.PartsUpdater" />
         </activity>
 
+<!--
         <activity
             android:name=".trust.TrustOnBoardingActivity"
             android:enabled="true"
@@ -64,6 +65,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+-->
 
         <receiver
             android:name=".BootReceiver"
@@ -218,6 +220,7 @@
         </activity-alias>
 
         <!-- Trust interface (Privacy category) -->
+<!--
         <activity-alias
             android:name=".trust.TrustPreferences"
             android:exported="true"
@@ -242,6 +245,7 @@
                 android:name="com.android.settings.summary"
                 android:resource="@string/trust_summary" />
         </activity-alias>
+-->
 
         <!-- Contributors Cloud (MyDeviceInfo category) -->
 <!--
