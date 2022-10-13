@@ -88,7 +88,7 @@ public class LineagePartsSearchIndexablesProvider extends SearchIndexablesProvid
             ref[COLUMN_INDEX_XML_RES_RANK] = 2;
             ref[COLUMN_INDEX_XML_RES_RESID] = i.getXmlRes();
             ref[COLUMN_INDEX_XML_RES_CLASS_NAME] = null;
-            ref[COLUMN_INDEX_XML_RES_ICON_RESID] = R.drawable.ic_launcher_lineageos;
+            ref[COLUMN_INDEX_XML_RES_ICON_RESID] = R.drawable.ic_launcher_shiftos;
             ref[COLUMN_INDEX_XML_RES_INTENT_ACTION] = i.getAction();
             ref[COLUMN_INDEX_XML_RES_INTENT_TARGET_PACKAGE] = LINEAGEPARTS_ACTIVITY.
                     getPackageName();
@@ -142,7 +142,7 @@ public class LineagePartsSearchIndexablesProvider extends SearchIndexablesProvid
                         raw.screenTitle : i.getTitle();
                 ref[COLUMN_INDEX_RAW_CLASS_NAME] = null;
                 ref[COLUMN_INDEX_RAW_ICON_RESID] = raw.iconResId > 0 ? raw.iconResId :
-                        (i.getIconRes() > 0 ? i.getIconRes() : R.drawable.ic_launcher_lineageos);
+                        (i.getIconRes() > 0 ? i.getIconRes() : R.drawable.ic_launcher_shiftos);
                 ref[COLUMN_INDEX_RAW_INTENT_ACTION] = raw.intentAction != null ?
                         raw.intentAction : i.getAction();
                 ref[COLUMN_INDEX_RAW_INTENT_TARGET_PACKAGE] = raw.intentTargetPackage != null ?
