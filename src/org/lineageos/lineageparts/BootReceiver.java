@@ -45,7 +45,7 @@ public class BootReceiver extends BroadcastReceiver {
         TouchscreenGestureSettings.restoreTouchscreenGestureStates(ctx);
 
         // Extract the contributors database
-        ContributorsCloudFragment.extractContributorsCloudDatabase(ctx);
+        //ContributorsCloudFragment.extractContributorsCloudDatabase(ctx);
     }
 
     private boolean hasRestoredTunable(Context context) {
