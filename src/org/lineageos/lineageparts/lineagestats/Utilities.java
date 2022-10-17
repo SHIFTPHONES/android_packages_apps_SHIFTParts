@@ -85,8 +85,7 @@ public class Utilities {
      * @return Whether or not stats collection is enabled.
      */
     public static boolean isStatsCollectionEnabled(Context context) {
-        return LineageSettings.Secure.getInt(context.getContentResolver(),
-                LineageSettings.Secure.STATS_COLLECTION, 1) != 0;
+        return false;
     }
 
     /**
