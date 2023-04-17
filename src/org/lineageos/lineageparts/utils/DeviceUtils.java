@@ -99,7 +99,7 @@ public class DeviceUtils {
 
     /* returns whether the device has back key or not. */
     public static boolean hasBackKey(Context context) {
-        return (getDeviceKeys(context) & KEY_MASK_BACK) != 0;
+        return false;
     }
 
     /* returns whether the device has menu key or not. */
