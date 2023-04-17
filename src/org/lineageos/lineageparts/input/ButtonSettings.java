@@ -175,7 +175,7 @@ public class ButtonSettings extends SettingsPreferenceFragment
 
         final boolean hasPowerKey = DeviceUtils.hasPowerKey();
         final boolean hasHomeKey = DeviceUtils.hasHomeKey(getActivity());
-        final boolean hasBackKey = DeviceUtils.hasBackKey(getActivity());
+        final boolean hasBackKey = false;
         final boolean hasMenuKey = DeviceUtils.hasMenuKey(getActivity());
         final boolean hasAssistKey = DeviceUtils.hasAssistKey(getActivity());
         final boolean hasAppSwitchKey = DeviceUtils.hasAppSwitchKey(getActivity());
