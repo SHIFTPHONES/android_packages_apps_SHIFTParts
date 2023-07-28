@@ -59,7 +59,6 @@
                 android:summary="@string/navigation_bar_invert_layout_summary"
                 android:defaultValue="false" />
 
-<!--
         <ListPreference
             android:key="navigation_back_long_press"
             android:dialogTitle="@string/navigation_bar_back_long_press_title"
@@ -67,7 +66,6 @@
             android:entries="@array/hardware_keys_action_entries"
             android:entryValues="@array/hardware_keys_action_values"
             android:persistent="false" />
--->
 
         <ListPreference
             android:key="navigation_home_long_press"

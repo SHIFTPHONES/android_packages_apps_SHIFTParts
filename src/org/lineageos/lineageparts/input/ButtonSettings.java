@@ -127,6 +127,7 @@ public class ButtonSettings extends SettingsPreferenceFragment
     private static final String CATEGORY_NAVBAR = "navigation_bar_category";
     private static final String CATEGORY_EXTRAS = "extras_category";
 
+    private ListPreference mBackLongPressAction;
     private ListPreference mHomeLongPressAction;
     private ListPreference mHomeDoubleTapAction;
     private ListPreference mMenuPressAction;
@@ -142,6 +143,7 @@ public class ButtonSettings extends SettingsPreferenceFragment
     private SwitchPreference mVolumePanelOnLeft;
     private SwitchPreference mDisableNavigationKeys;
     private SwitchPreference mNavigationArrowKeys;
+    private ListPreference mNavigationBackLongPressAction;
     private ListPreference mNavigationHomeLongPressAction;
     private ListPreference mNavigationHomeDoubleTapAction;
     private ListPreference mNavigationAppSwitchLongPressAction;
@@ -219,12 +221,17 @@ public class ButtonSettings extends SettingsPreferenceFragment
 
         mNavigationPreferencesCat = findPreference(CATEGORY_NAVBAR);
 
+        Action defaultBackLongPressAction = Action.fromIntSafe(res.getInteger(
+                org.lineageos.platform.internal.R.integer.config_longPressOnBackBehavior));
         Action defaultHomeLongPressAction = Action.fromIntSafe(res.getInteger(
                 org.lineageos.platform.internal.R.integer.config_longPressOnHomeBehavior));
         Action defaultHomeDoubleTapAction = Action.fromIntSafe(res.getInteger(
                 org.lineageos.platform.internal.R.integer.config_doubleTapOnHomeBehavior));
         Action defaultAppSwitchLongPressAction = Action.fromIntSafe(res.getInteger(
                 org.lineageos.platform.internal.R.integer.config_longPressOnAppSwitchBehavior));
+        Action backLongPressAction = Action.fromSettings(resolver,
+                LineageSettings.System.KEY_BACK_LONG_PRESS_ACTION,
+                defaultBackLongPressAction);
         Action homeLongPressAction = Action.fromSettings(resolver,
                 LineageSettings.System.KEY_HOME_LONG_PRESS_ACTION,
                 defaultHomeLongPressAction);
@@ -240,6 +247,10 @@ public class ButtonSettings extends SettingsPreferenceFragment
 
         // Navigation bar arrow keys while typing
         mNavigationArrowKeys = findPreference(KEY_NAVIGATION_ARROW_KEYS);
+
+        // Navigation bar back long press
+        mNavigationBackLongPressAction = initList(KEY_NAVIGATION_BACK_LONG_PRESS,
+                backLongPressAction);
 
         // Navigation bar home long press
         mNavigationHomeLongPressAction = initList(KEY_NAVIGATION_HOME_LONG_PRESS,
@@ -303,6 +314,17 @@ public class ButtonSettings extends SettingsPreferenceFragment
             prefScreen.removePreference(homeCategory);
         }
 
+        if (hasBackKey) {
+            if (!showBackWake) {
+                backCategory.removePreference(findPreference(KEY_BACK_WAKE_SCREEN));
+            }
+
+            mBackLongPressAction = initList(KEY_BACK_LONG_PRESS, backLongPressAction);
+            if (mDisableNavigationKeys.isChecked()) {
+                mBackLongPressAction.setEnabled(false);
+            }
+
+        }
         if (!hasBackKey || backCategory.getPreferenceCount() == 0) {
             prefScreen.removePreference(backCategory);
         }
@@ -483,6 +505,11 @@ public class ButtonSettings extends SettingsPreferenceFragment
         String[] actionEntries = entries.toArray(new String[0]);
         String[] actionValues = values.toArray(new String[0]);
 
+        if (hasBackKey) {
+            mBackLongPressAction.setEntries(actionEntries);
+            mBackLongPressAction.setEntryValues(actionValues);
+        }
+
         if (hasHomeKey) {
             mHomeLongPressAction.setEntries(actionEntries);
             mHomeLongPressAction.setEntryValues(actionValues);
@@ -514,6 +541,9 @@ public class ButtonSettings extends SettingsPreferenceFragment
             mAppSwitchLongPressAction.setEntries(actionEntries);
             mAppSwitchLongPressAction.setEntryValues(actionValues);
         }
+
+        mNavigationBackLongPressAction.setEntries(actionEntries);
+        mNavigationBackLongPressAction.setEntryValues(actionValues);
 
         mNavigationHomeLongPressAction.setEntries(actionEntries);
         mNavigationHomeLongPressAction.setEntryValues(actionValues);
@@ -582,7 +612,12 @@ public class ButtonSettings extends SettingsPreferenceFragment
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference == mHomeLongPressAction ||
+        if (preference == mBackLongPressAction ||
+                preference == mNavigationBackLongPressAction) {
+            handleListChange((ListPreference) preference, newValue,
+                    LineageSettings.System.KEY_BACK_LONG_PRESS_ACTION);
+            return true;
+        } else if (preference == mHomeLongPressAction ||
                 preference == mNavigationHomeLongPressAction) {
             handleListChange((ListPreference) preference, newValue,
                     LineageSettings.System.KEY_HOME_LONG_PRESS_ACTION);
@@ -663,6 +698,7 @@ public class ButtonSettings extends SettingsPreferenceFragment
     private void toggleTaskBarDependencies(boolean enabled) {
         enablePreference(mNavigationArrowKeys, !enabled);
         enablePreference(mNavBarInverse, !enabled);
+        enablePreference(mNavigationBackLongPressAction, !enabled);
         enablePreference(mNavigationHomeLongPressAction, !enabled);
         enablePreference(mNavigationHomeDoubleTapAction, !enabled);
         enablePreference(mNavigationAppSwitchLongPressAction, !enabled);
@@ -717,16 +753,19 @@ public class ButtonSettings extends SettingsPreferenceFragment
                     mNavigationPreferencesCat.addPreference(mEdgeLongSwipeAction);
 
                     mNavigationPreferencesCat.removePreference(mNavigationArrowKeys);
+                    mNavigationPreferencesCat.removePreference(mNavigationBackLongPressAction);
                     mNavigationPreferencesCat.removePreference(mNavigationHomeLongPressAction);
                     mNavigationPreferencesCat.removePreference(mNavigationHomeDoubleTapAction);
                     mNavigationPreferencesCat.removePreference(mNavigationAppSwitchLongPressAction);
                 } else if (DeviceUtils.isSwipeUpEnabled(getContext())) {
+                    mNavigationPreferencesCat.addPreference(mNavigationBackLongPressAction);
                     mNavigationPreferencesCat.addPreference(mNavigationHomeLongPressAction);
                     mNavigationPreferencesCat.addPreference(mNavigationHomeDoubleTapAction);
 
                     mNavigationPreferencesCat.removePreference(mNavigationAppSwitchLongPressAction);
                     mNavigationPreferencesCat.removePreference(mEdgeLongSwipeAction);
                 } else {
+                    mNavigationPreferencesCat.addPreference(mNavigationBackLongPressAction);
                     mNavigationPreferencesCat.addPreference(mNavigationHomeLongPressAction);
                     mNavigationPreferencesCat.addPreference(mNavigationHomeDoubleTapAction);
                     mNavigationPreferencesCat.addPreference(mNavigationAppSwitchLongPressAction);
@@ -734,6 +773,9 @@ public class ButtonSettings extends SettingsPreferenceFragment
                     mNavigationPreferencesCat.removePreference(mEdgeLongSwipeAction);
                 }
             }
+        }
+        if (backCategory != null) {
+            enablePreference(mBackLongPressAction, !navbarEnabled);
         }
         if (homeCategory != null) {
             enablePreference(mHomeAnswerCall, !navbarEnabled);
