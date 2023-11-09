@@ -198,7 +198,9 @@ public class PlatLogoActivity extends Activity {
             }
             canvas.restore();
 
-            checkLongPressTimeout();
+            // Disable until we get a stage 2 easter egg
+            // check if a long press event has occured
+            // checkLongPressTimeout();
         }
 
         @Override
