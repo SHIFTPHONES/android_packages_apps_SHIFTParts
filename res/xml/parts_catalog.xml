@@ -106,4 +106,9 @@
           android:title="@string/live_display_color_profile_title"
           android:fragment="org.lineageos.lineageparts.livedisplay.ColorProfileFragment"
           lineage:xmlRes="@xml/color_profile_settings" />
+
+    <part android:key="shiftmetrics"
+          android:title="@string/shift_metrics_title"
+          android:fragment="eco.shift.os.parts.MetricsSettings"
+          lineage:xmlRes="@xml/shift_metrics" />
 </parts-catalog>
