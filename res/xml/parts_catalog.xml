@@ -101,4 +101,9 @@
           android:fragment="org.lineageos.lineageparts.trust.TrustPreferences"
           lineage:xmlRes="@xml/trust_preferences" />
 -->
+
+    <part android:key="shiftmetrics"
+          android:title="@string/shift_metrics_title"
+          android:fragment="eco.shift.os.parts.MetricsSettings"
+          lineage:xmlRes="@xml/shift_metrics" />
 </parts-catalog>
