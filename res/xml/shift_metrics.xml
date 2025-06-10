@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: SHIFT GmbH
+     SPDX-License-Identifier: Apache-2.0
+-->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="shiftmetrics"
+    android:title="@string/shift_metrics_title">
+
+    <shiftos.preference.SecureSettingSwitchPreference
+            android:key="shift_enable_metrics"
+            android:title="@string/shift_enable_metrics_title"
+            android:summary="@string/shift_enable_metrics_summary"
+            android:defaultValue="true" />
+
+</PreferenceScreen>
