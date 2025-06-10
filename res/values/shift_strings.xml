@@ -19,4 +19,7 @@
 
     <string name="shiftparts_title">ShiftOS Settings</string>
 
+	<string name="shift_metrics_title">ShiftOS System Metrics</string>
+	<string name="shift_enable_metrics_title">Enable system metrics</string>
+	<string name="shift_enable_metrics_summary">Help make ShiftOS better by opting into anonymous metrics reporting, such as sending issue reports for system components</string>
 </resources>
